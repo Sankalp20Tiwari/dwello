@@ -6,7 +6,7 @@ import images from '@/constants/images'
 import { settings } from '@/constants/data'
 import { useGlobalContext } from '@/lib/globalProvider'
 import { logout } from '@/lib/appwrite'
-import { Redirect } from 'expo-router'
+import { Redirect, router } from 'expo-router'
 
 interface SettingItemProps {
   icon: ImageSourcePropType,
@@ -36,8 +36,13 @@ const Profile = () => {
   const handleLogout = async () => {
     const result  = await logout()
     if(result){
-      Alert.alert('Success', 'Logged out successfully')
-      refetch({})
+      router.replace('/sign-in'); // Redirect first
+  
+      // Show alert after a slight delay
+      setTimeout(() => {
+        Alert.alert('Success', 'Logged out successfully');
+      }, 500);
+      refetch({ });
     }
     else{
       Alert.alert('Error', 'Failed to logout')
